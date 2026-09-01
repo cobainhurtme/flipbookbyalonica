@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flipbook Library Pro - Alonica</title>
+  <title>Flipbook Library - Alonica</title>
 
   <!-- Google Fonts & Font Awesome Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- DFlip CSS -->
@@ -15,187 +15,219 @@
 
   <style>
     :root {
-      --bg-overlay: rgba(15, 23, 42, 0.88);
-      --card-bg: rgba(30, 41, 59, 0.75);
-      --accent: #38bdf8;
-      --accent-hover: #0284c7;
-      --gold: #fbbf24;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.12);
+      --bg-dark: #090d16;
+      --card-bg: rgba(18, 26, 43, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(56, 189, 248, 0.4);
+      --accent-cyan: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.35);
+      --gold-star: #fbbf24;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
     }
+
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), 
-                  url('img/bg-web.png') center/cover fixed no-repeat #0f172a;
-      color: var(--text);
+      background: linear-gradient(180deg, rgba(9, 13, 22, 0.88) 0%, rgba(9, 13, 22, 0.95) 100%), 
+                  url('img/bg-web.png') center/cover fixed no-repeat #090d16;
+      color: var(--text-primary);
       margin: 0;
       padding-top: 100px;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Navbar Glassmorphism */
+    /* Navbar Glassmorphism Sleek */
     .navbar {
       position: fixed; top: 0; left: 0; width: 100%;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 5%;
+      background: rgba(9, 13, 22, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 6%;
       display: flex; justify-content: space-between; align-items: center;
-      box-sizing: border-box; z-index: 1000;
+      z-index: 1000;
     }
 
     .brand { 
-      font-size: 1.4rem; font-weight: 700; color: var(--accent); 
-      display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px;
+      font-size: 1.35rem; font-weight: 800; color: #ffffff; 
+      display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px;
+    }
+    
+    .brand i { color: var(--accent-cyan); font-size: 1.4rem; filter: drop-shadow(0 0 8px var(--accent-glow)); }
+
+    .search-box { position: relative; display: flex; align-items: center; }
+    
+    .search-box input {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 10px 20px 10px 42px; border-radius: 30px;
+      width: 270px; outline: none; font-size: 0.88rem;
+      font-family: inherit; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .search-box input {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 10px 20px; border-radius: 30px;
-      width: 260px; outline: none; font-size: 0.9rem;
-      transition: all 0.3s ease;
+    .search-box i {
+      position: absolute; left: 16px; color: var(--text-secondary); font-size: 0.9rem;
     }
 
     .search-box input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+      width: 300px;
     }
 
-    /* Filter Bar Dinamis */
+    /* Filter Bar Pills Modern */
     .filter-container {
-      padding: 10px 5% 20px;
-      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+      padding: 15px 5% 25px;
+      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
       max-width: 1000px; margin: 0 auto;
     }
 
     .filter-btn {
-      background: var(--card-bg);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 8px 18px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      padding: 8px 22px; border-radius: 30px;
       cursor: pointer; font-size: 0.85rem; font-weight: 600;
-      transition: all 0.25s ease;
-      text-transform: capitalize;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: capitalize; font-family: inherit;
     }
 
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent); color: #0f172a; font-weight: 700; 
-      border-color: var(--accent); box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    .filter-btn:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #090d16; font-weight: 700; 
+      border-color: transparent; 
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
     }
 
     /* Grid Catalog Buku Horizontal */
     .book-grid {
-      display: grid; grid-template-columns: 1fr; gap: 25px;
-      padding: 10px 5% 60px; max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 30px;
+      padding: 10px 5% 60px; max-width: 950px; margin: 0 auto;
     }
 
     .book-card {
       background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 20px; border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px; border: 1px solid var(--card-border);
       display: flex; overflow: hidden; position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .book-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.15);
+      transform: translateY(-5px);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.12);
     }
 
     .cover-wrapper {
-      width: 200px; height: 280px; flex-shrink: 0; overflow: hidden; position: relative;
+      width: 210px; height: 290px; flex-shrink: 0; overflow: hidden; position: relative;
     }
 
     .cover-wrapper img {
       width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .book-card:hover .cover-wrapper img {
+      transform: scale(1.05);
     }
 
     .badge-popular {
-      position: absolute; top: 12px; left: 12px;
-      background: var(--gold); color: #0f172a;
-      font-size: 0.7rem; font-weight: 800;
-      padding: 4px 10px; border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      text-transform: uppercase;
+      position: absolute; top: 14px; left: 14px;
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      color: #090d16; font-size: 0.68rem; font-weight: 800;
+      padding: 5px 12px; border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      text-transform: uppercase; letter-spacing: 0.5px;
     }
 
     .book-details {
-      padding: 28px; flex-grow: 1;
+      padding: 30px 32px; flex-grow: 1;
       display: flex; flex-direction: column; justify-content: space-between;
     }
 
-    .book-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 12px 0; color: white; }
+    .book-title { 
+      font-size: 1.6rem; font-weight: 800; margin: 0 0 12px 0; 
+      color: #ffffff; letter-spacing: -0.5px;
+    }
 
     .book-synopsis {
-      color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin: 0 0 20px 0;
+      color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin: 0 0 20px 0;
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+      font-weight: 400;
     }
 
     .book-meta {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 20px; border-top: 1px solid var(--border); padding-top: 14px;
+      margin-bottom: 22px; border-top: 1px solid var(--card-border); padding-top: 16px;
     }
 
     .genre-badges { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .badge {
-      font-size: 0.72rem; font-weight: 700;
-      background: rgba(56, 189, 248, 0.15); color: var(--accent);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 5px 12px; border-radius: 20px; text-transform: uppercase;
+      font-size: 0.7rem; font-weight: 700;
+      background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 5px 14px; border-radius: 20px; text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .upload-date { color: var(--text-muted); font-size: 0.82rem; display: flex; align-items: center; gap: 6px; }
+    .upload-date { color: var(--text-secondary); font-size: 0.82rem; display: flex; align-items: center; gap: 6px; }
 
-    .book-action-bar {
-      display: flex; justify-content: space-between; align-items: center;
-    }
-
-    /* Fixing Tombol Baca Flipbook DFlip */
+    /* Custom Stylish Button DFlip */
     .book-action ._df_button {
-      display: inline-flex !important; align-items: center; gap: 8px;
-      background: var(--accent) !important; color: #0f172a !important; 
-      font-weight: 700 !important; font-size: 0.9rem !important;
-      padding: 10px 24px !important; border-radius: 12px !important;
+      display: inline-flex !important; align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%) !important; 
+      color: #090d16 !important; font-weight: 800 !important; font-size: 0.9rem !important;
+      padding: 12px 28px !important; border-radius: 14px !important;
       cursor: pointer; border: none !important;
-      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3) !important;
-      transition: all 0.25s ease !important;
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35) !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      font-family: inherit !important; text-transform: none !important;
     }
 
     .book-action ._df_button:hover {
-      background: var(--accent-hover) !important; color: white !important;
-      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(56, 189, 248, 0.55) !important;
+      transform: translateY(-2px) scale(1.02);
+      color: #ffffff !important;
     }
 
     /* Dark Mode Override DFlip Lightbox */
     .df-lightbox-wrapper,
     .df-lightbox-container,
     .df-container {
-      background: rgba(15, 23, 42, 0.95) !important;
-      backdrop-filter: blur(12px) !important;
+      background: rgba(9, 13, 22, 0.96) !important;
+      backdrop-filter: blur(16px) !important;
     }
 
     .df-ui-controls {
-      background: rgba(30, 41, 59, 0.85) !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-      border-radius: 12px !important;
+      background: rgba(18, 26, 43, 0.85) !important;
+      border: 1px solid var(--card-border) !important;
+      border-radius: 16px !important;
       color: #f8fafc !important;
     }
 
-    .df-ui-btn { color: #38bdf8 !important; }
+    .df-ui-btn { color: var(--accent-cyan) !important; }
 
-    @media (max-width: 650px) {
+    @media (max-width: 680px) {
       .book-card { flex-direction: column; }
-      .cover-wrapper { width: 100%; height: 230px; }
-      .book-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .cover-wrapper { width: 100%; height: 250px; }
+      .book-meta { flex-direction: column; align-items: flex-start; gap: 14px; }
       .search-box input { width: 100%; }
+      .search-box input:focus { width: 100%; }
     }
   </style>
 </head>
@@ -205,7 +237,8 @@
   <nav class="navbar">
     <div class="brand"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
     <div class="search-box">
-      <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul/genre...">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul atau genre...">
     </div>
   </nav>
 
