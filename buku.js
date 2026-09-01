@@ -10,6 +10,15 @@ const daftarBuku = [
     deskripsi: "Lima tahun setelah kasus misterius berlalu, Jagad kembali ke Damn Boune dan menemukan petunjuk baru tentang kematian tiga pejabat serta korupsi yang tersembunyi. Bersama Arken, Cendy, dan Akbar, ia berusaha mengungkap dalang di balik semuanya sebelum kebenaran kembali terkubur.",
     tanggal: "1 Sep 2026",
     isPopuler: true
+  },
+  {
+    judul: "Satu Langkah Lagi",
+    file: "books/satu-langkah-lagi.pdf",
+    cover: "img/satu-langkah-lagi-cover.png",
+    genre: ["romance", "drama", ], // <-- Langsung ketik "romance" di sini
+    deskripsi: "Di tengah senja di tepi pantai, dua sahabat kembali bertemu setelah sekian lama menjalani kesibukan masing-masing. Pertemuan sederhana itu membawa mereka mengingat berbagai kenangan yang pernah dilalui bersama. Sambil menikmati indahnya matahari terbenam, mereka menyadari bahwa terkadang untuk melangkah maju, seseorang hanya perlu satu langkah lagi.",
+    tanggal: "2 Sep 2026",
+    isPopuler: false
   }
 ];
 
