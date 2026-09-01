@@ -205,7 +205,7 @@
       color: #ffffff !important;
     }
 
-    /* FIX FLOATING TOOLBAR DFLIP */
+    /* FIX FLOATING TOOLBAR DFLIP DI BAWAH */
     .df-lightbox-wrapper,
     .df-lightbox-container,
     .df-container {
@@ -214,8 +214,14 @@
       -webkit-backdrop-filter: blur(20px) !important;
     }
 
-    /* Wrapper utama bar bawah */
     .df-ui-controls {
+      position: absolute !important;
+      bottom: 20px !important;
+      top: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      z-index: 99999 !important;
+
       background: rgba(18, 26, 43, 0.85) !important;
       backdrop-filter: blur(16px) !important;
       -webkit-backdrop-filter: blur(16px) !important;
@@ -224,19 +230,16 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15) !important;
       height: 48px !important;
       line-height: 48px !important;
-      padding: 0 12px !important;
-      margin: 0 auto 15px auto !important;
+      padding: 0 16px !important;
+      margin: 0 !important;
       width: fit-content !important;
       min-width: unset !important;
       max-width: 90vw !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      position: relative !important;
-      overflow: hidden !important;
     }
 
-    /* Merapikan posisi internal tombol */
     .df-ui-controls .df-ui-btn,
     .df-ui-controls .df-ui-prev,
     .df-ui-controls .df-ui-next,
@@ -255,7 +258,6 @@
       justify-content: center !important;
     }
 
-    /* Tombol Icon */
     .df-ui-btn {
       color: var(--text-primary) !important;
       background: transparent !important;
@@ -271,7 +273,6 @@
       opacity: 1 !important;
     }
 
-    /* Teks Angka Halaman */
     .df-ui-page-input, .df-ui-page {
       color: var(--accent-cyan) !important;
       font-weight: 700 !important;
