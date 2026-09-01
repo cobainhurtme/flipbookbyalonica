@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Book</title>
+  
+  <!-- CSS Library DFlip -->
+  <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent-color: #38bdf8;
+      --text-color: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--accent-color);
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Grid layout untuk katalog buku */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Card styling */
+    .book-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .book-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(56, 189, 248, 0.2);
+    }
+
+    .book-title {
+      font-size: 1.4rem;
+      margin: 0 0 10px 0;
+    }
+
+    .book-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Tombol baca */
+    .book-action ._df_button {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background-color: var(--accent-color) !important;
+      color: #0f172a !important;
+      font-weight: bold !important;
+      padding: 12px !important;
+      border-radius: 8px !important;
+      transition: background-color 0.2s !important;
+      border: none !important;
+      cursor: pointer;
+    }
+
+    .book-action ._df_button:hover {
+      background-color: #ffffff !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📚 Koleksi Flipbook Digital</h1>
+    <p>Pilih dan baca dokumen interaktif di bawah ini</p>
+  </div>
+
+  <div class="book-grid">
+    
+    <!-- Kartu Buku 1 -->
+    <div class="book-card">
+      <div>
+        <h2 class="book-title">Boune City</h2>
+        <p class="book-desc">Dokumen dan panduan interaktif seputar kota Boune City.</p>
+      </div>
+      <div class="book-action">
+        <!-- Memanggil file PDF di folder books/ -->
+        <div class="_df_button" source="books/boune-city.pdf">Baca Flipbook</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
+
+</body>
+</html>
