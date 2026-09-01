@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flipbook Library - Alonica</title>
+  <title>Flipbook Library - freudian</title>
 
   <!-- Google Fonts & Font Awesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -54,6 +54,7 @@
     .brand { 
       font-size: 1.35rem; font-weight: 800; color: #ffffff; 
       display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px;
+      cursor: pointer;
     }
     
     .brand i { color: var(--accent-cyan); font-size: 1.4rem; filter: drop-shadow(0 0 8px var(--accent-glow)); }
@@ -141,7 +142,7 @@
       position: absolute;
       top: 52px;
       right: 0;
-      width: 260px;
+      width: 240px;
       background: rgba(18, 26, 43, 0.95);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
@@ -174,8 +175,8 @@
     }
 
     .dropdown-avatar {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--accent-cyan);
@@ -352,7 +353,13 @@
 
     .upload-date { color: var(--text-secondary); font-size: 0.82rem; display: flex; align-items: center; gap: 6px; }
 
-    /* Custom Stylish Button DFlip */
+    /* Action Container & Favorite Button */
+    .book-action {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .book-action ._df_button {
       display: inline-flex !important; align-items: center; justify-content: center; gap: 10px;
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%) !important; 
@@ -368,6 +375,61 @@
       box-shadow: 0 10px 28px rgba(56, 189, 248, 0.55) !important;
       transform: translateY(-2px) scale(1.02);
       color: #ffffff !important;
+    }
+
+    .btn-fav-toggle {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      width: 45px; height: 45px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .btn-fav-toggle:hover {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--gold-star);
+      border-color: rgba(251, 191, 36, 0.3);
+    }
+
+    .btn-fav-toggle.is-fav {
+      background: rgba(251, 191, 36, 0.2);
+      color: var(--gold-star);
+      border-color: var(--gold-star);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+    }
+
+    /* GRID COVERS ONLY (HANYA COVER UNTUK LIBRARY/FAVORIT) */
+    .book-grid.covers-only {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 25px;
+    }
+
+    .book-grid.covers-only .book-card {
+      flex-direction: column;
+      border-radius: 18px;
+    }
+
+    .book-grid.covers-only .cover-wrapper {
+      width: 100%; height: 280px;
+    }
+
+    .book-grid.covers-only .book-details {
+      padding: 16px;
+    }
+
+    .book-grid.covers-only .book-synopsis,
+    .book-grid.covers-only .book-meta {
+      display: none !important;
+    }
+
+    .book-grid.covers-only .book-title {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* FIX FLOATING TOOLBAR DFLIP DI BAWAH */
@@ -462,7 +524,7 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="brand"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
+    <div class="brand" onclick="filterGenre('all')"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
     
     <div class="nav-right">
       <div class="search-box">
@@ -473,34 +535,28 @@
       <!-- User Profile Dropdown Component -->
       <div class="user-profile-wrapper">
         <div class="user-profile" id="userProfileBtn">
-          <img src="img/avatar.png" alt="User Avatar" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Alonica&background=38bdf8&color=090d16'">
-          <span class="user-name">Alonica</span>
+          <img src="img/profile.png" alt="User Avatar" class="user-avatar" id="navUserAvatar">
+          <span class="user-name" id="navUserName">freudian</span>
           <i class="fa-solid fa-chevron-down"></i>
         </div>
 
         <!-- Menu Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
           <div class="dropdown-header">
-            <img src="img/avatar.png" alt="User Avatar" class="dropdown-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Alonica&background=38bdf8&color=090d16'">
+            <img src="img/profile.png" alt="User Avatar" class="dropdown-avatar" id="dropdownUserAvatar">
             <div class="dropdown-user-info">
-              <p class="name">Alonica</p>
+              <p class="name" id="dropdownUserName">freudian</p>
               <p class="role"><i class="fa-solid fa-circle-check"></i> VIP Member</p>
             </div>
           </div>
 
           <ul class="dropdown-menu-list">
-            <li class="dropdown-item">
+            <li class="dropdown-item" onclick="showLibraryOnly()">
               <div><i class="fa-solid fa-bookmark"></i> Library Saya</div>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" onclick="showFavoritesOnly()">
               <div><i class="fa-solid fa-star"></i> Buku Favorit</div>
-              <span class="fav-count-badge">2</span>
-            </li>
-            <li class="dropdown-item">
-              <div><i class="fa-solid fa-gear"></i> Pengaturan</div>
-            </li>
-            <li class="dropdown-item" style="color: #ef4444;">
-              <div><i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i> Keluar</div>
+              <span class="fav-count-badge" id="favBadge">0</span>
             </li>
           </ul>
         </div>
@@ -519,8 +575,31 @@
   <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
   <script src="buku.js"></script>
 
-  <!-- Script untuk Toggle Dropdown Profile -->
+  <!-- Script Profil & UI Interaction -->
   <script>
+    // System Username & Avatar Handler
+    const defaultUsername = "freudian";
+    const defaultAvatar = "img/profile.png"; 
+
+    const activeUsername = localStorage.getItem('username') || defaultUsername;
+    const activeAvatar = localStorage.getItem('userAvatar') || defaultAvatar;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('navUserName').textContent = activeUsername;
+      document.getElementById('dropdownUserName').textContent = activeUsername;
+      
+      const navAvatarImg = document.getElementById('navUserAvatar');
+      const dropAvatarImg = document.getElementById('dropdownUserAvatar');
+      const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(activeUsername)}&background=38bdf8&color=090d16`;
+
+      navAvatarImg.src = activeAvatar;
+      dropAvatarImg.src = activeAvatar;
+
+      navAvatarImg.onerror = () => { navAvatarImg.src = fallbackAvatar; };
+      dropAvatarImg.onerror = () => { dropAvatarImg.src = fallbackAvatar; };
+    });
+
+    // Toggle Dropdown Profile Menu
     const profileBtn = document.getElementById('userProfileBtn');
     const dropdown = document.getElementById('profileDropdown');
 
@@ -530,7 +609,6 @@
       dropdown.classList.toggle('show');
     });
 
-    // Tutup dropdown jika klik di luar area profil
     document.addEventListener('click', (e) => {
       if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
         profileBtn.classList.remove('active');
