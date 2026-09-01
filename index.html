@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perpustakaan Flipbook Digital Pro</title>
   
+  <!-- Font Modern -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   
+  <!-- DFlip CSS -->
   <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet">
 
@@ -17,7 +19,7 @@
       --accent: #38bdf8;
       --text: #f3f4f6;
       --text-muted: #9ca3af;
-      --border: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
     }
 
     body {
@@ -25,7 +27,7 @@
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding-top: 80px; /* Jarak untuk navbar */
+      padding-top: 80px;
     }
 
     /* Navbar Modern */
@@ -58,7 +60,8 @@
       color: var(--text);
       padding: 10px 20px;
       border-radius: 30px;
-      width: 300px;
+      width: 280px;
+      outline: none;
     }
 
     /* Filter Genre */
@@ -76,9 +79,10 @@
       border-radius: 20px;
       margin: 5px;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .filter-btn.active {
+    .filter-btn:hover, .filter-btn.active {
       background: var(--accent);
       color: #030712;
       font-weight: 600;
@@ -90,9 +94,11 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
       padding: 30px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    /* Card Buku dengan Thumbnail */
+    /* Card Buku */
     .book-card {
       background: var(--card);
       border-radius: 16px;
@@ -100,23 +106,23 @@
       border: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
     .book-card:hover {
       transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
     }
 
-    .cover-wrapper {
+    /* Area Thumbnail PDF Otomatis */
+    .pdf-thumb-wrapper {
       width: 100%;
-      height: 380px;
+      height: 320px;
+      background: #1f2937;
       overflow: hidden;
-    }
-
-    .cover-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .book-info {
@@ -133,18 +139,27 @@
       margin: 0 0 10px 0;
     }
 
+    .book-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
     .book-meta {
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
     }
 
     .badge-genre {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--accent);
       background: rgba(56, 189, 248, 0.1);
       padding: 4px 10px;
       border-radius: 20px;
+      text-transform: capitalize;
     }
 
     /* Tombol Baca */
@@ -158,31 +173,40 @@
       padding: 12px !important;
       border-radius: 8px !important;
       cursor: pointer;
+      border: none !important;
     }
   </style>
 </head>
 <body>
 
+  <!-- Navbar -->
   <nav class="navbar">
     <h1 class="brand">flipbookbyalonica</h1>
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Cari judul buku atau genre...">
+      <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul atau genre...">
     </div>
   </nav>
 
+  <!-- Filter Genre -->
   <div class="filter-container">
-    <button class="filter-btn active" onclick="filterGenre('all')">Semua</button>
-    <button class="filter-btn" onclick="filterGenre('kota')">Kota</button>
-    <button class="filter-btn" onclick="filterGenre('majalah')">Majalah</button>
-    <button class="filter-btn" onclick="filterGenre('edukasi')">Edukasi</button>
+    <button class="filter-btn active" onclick="filterGenre('all', this)">Semua</button>
+    <button class="filter-btn" onclick="filterGenre('kota', this)">Kota</button>
+    <button class="filter-btn" onclick="filterGenre('majalah', this)">Majalah</button>
+    <button class="filter-btn" onclick="filterGenre('edukasi', this)">Edukasi</button>
   </div>
 
+  <!-- Grid Tempat Buku Muncul Otomatis -->
   <div class="book-grid" id="bookGrid">
-    </div>
+    <!-- Diisi otomatis dari buku.js -->
+  </div>
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+  <!-- Library PDF.js untuk Otomatis render cover depan PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
   
+  <!-- Database buku kita -->
   <script src="buku.js"></script>
 
 </body>
