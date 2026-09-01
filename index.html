@@ -3,130 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perpustakaan Flipbook Digital Pro</title>
-  
-  <!-- Font Modern -->
+  <title>Flipbook Library Pro - Alonica</title>
+
+  <!-- Google Fonts & Font Awesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <!-- DFlip CSS -->
   <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #030712;
-      --card: #111827;
+      --bg-overlay: rgba(15, 23, 42, 0.9);
+      --card-bg: rgba(30, 41, 59, 0.75);
       --accent: #38bdf8;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --border: rgba(255,255,255,0.08);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
     }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
+      /* Background Gambar Lokal dari folder img/bg-web.jpg */
+      background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), 
+                  url('img/bg-web.jpg') center/cover fixed no-repeat #0f172a;
       color: var(--text);
       margin: 0;
-      padding-top: 80px;
+      padding-top: 90px;
+      min-height: 100vh;
     }
 
-    /* Navbar Modern */
+    /* Navbar */
     .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(3, 7, 18, 0.85);
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       padding: 15px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-sizing: border-box;
-      z-index: 1000;
+      display: flex; justify-content: space-between; align-items: center;
+      box-sizing: border-box; z-index: 1000;
     }
 
-    .brand {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin: 0;
-    }
+    .brand { font-size: 1.4rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+
+    .nav-actions { display: flex; gap: 15px; align-items: center; }
 
     .search-box input {
-      background: var(--card);
+      background: rgba(15, 23, 42, 0.8);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 10px 20px;
-      border-radius: 30px;
-      width: 280px;
-      outline: none;
+      padding: 10px 18px; border-radius: 30px;
+      width: 240px; outline: none; font-size: 0.9rem;
     }
 
-    /* Filter Genre */
-    .filter-container {
-      padding: 20px 5%;
-      text-align: center;
-      margin-top: 20px;
+    .btn-add-book {
+      background: var(--accent); color: #0f172a; border: none;
+      padding: 10px 18px; border-radius: 30px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
     }
 
-    .filter-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 8px 18px;
-      border-radius: 20px;
-      margin: 5px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent);
-      color: #030712;
-      font-weight: 600;
-    }
-
-    /* Grid Buku Pro */
+    /* Grid Catalog Buku */
     .book-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
+      grid-template-columns: 1fr;
+      gap: 25px;
       padding: 30px 5%;
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
-    /* Card Buku */
+    /* Card Buku Horizontal */
     .book-card {
-      background: var(--card);
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
       border-radius: 16px;
-      overflow: hidden;
       border: 1px solid var(--border);
       display: flex;
-      flex-direction: column;
-      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .book-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+      transform: translateX(5px);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
     }
 
-    /* Area Thumbnail PDF Otomatis */
-    .pdf-thumb-wrapper {
-      width: 100%;
-      height: 320px;
-      background: #1f2937;
+    /* Kiri: Cover */
+    .cover-wrapper {
+      width: 180px;
+      height: 260px;
+      flex-shrink: 0;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .book-info {
-      padding: 20px;
+    .cover-wrapper img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    /* Kanan: Details Berurutan */
+    .book-details {
+      padding: 25px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -134,46 +112,91 @@
     }
 
     .book-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin: 0 0 10px 0;
+      font-size: 1.4rem; font-weight: 700;
+      margin: 0 0 15px 0; color: white;
     }
 
-    .book-desc {
+    /* 1. Sinopsis Singkat */
+    .book-synopsis {
       color: var(--text-muted);
       font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 15px;
+      line-height: 1.6;
+      margin: 0 0 20px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
+    /* Baris Meta (Genre & Tanggal) */
     .book-meta {
       display: flex;
-      gap: 8px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
     }
 
-    .badge-genre {
-      font-size: 0.75rem;
+    /* 2. Genre */
+    .genre-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .badge {
+      font-size: 0.7rem; font-weight: 700;
+      background: rgba(56, 189, 248, 0.15);
       color: var(--accent);
-      background: rgba(56, 189, 248, 0.1);
-      padding: 4px 10px;
-      border-radius: 20px;
-      text-transform: capitalize;
+      padding: 4px 10px; border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    /* 3. Tanggal Upload */
+    .upload-date {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      display: flex; align-items: center; gap: 6px;
     }
 
     /* Tombol Baca */
     .book-action ._df_button {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background-color: var(--accent) !important;
-      color: #030712 !important;
-      font-weight: bold !important;
-      padding: 12px !important;
+      display: inline-block;
+      width: auto;
+      background: var(--accent) !important;
+      color: #0f172a !important;
+      font-weight: 700 !important;
+      padding: 10px 25px !important;
       border-radius: 8px !important;
-      cursor: pointer;
-      border: none !important;
+      cursor: pointer; border: none !important;
+    }
+
+    /* Modal Form */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+      display: none; justify-content: center; align-items: center; z-index: 2000;
+    }
+
+    .modal-card {
+      background: #1e293b; border: 1px solid var(--border);
+      padding: 30px; border-radius: 16px;
+      width: 90%; max-width: 480px;
+    }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 10px; background: #0f172a; border: 1px solid var(--border);
+      border-radius: 8px; color: white; box-sizing: border-box; font-family: inherit;
+    }
+
+    .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+    .btn-cancel { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+    .btn-submit { background: var(--accent); color: #0f172a; border: none; padding: 8px 16px; font-weight: 700; border-radius: 8px; cursor: pointer; }
+
+    @media (max-width: 600px) {
+      .book-card { flex-direction: column; }
+      .cover-wrapper { width: 100%; height: 220px; }
+      .book-meta { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .search-box input { width: 150px; }
     }
   </style>
 </head>
@@ -181,33 +204,148 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <h1 class="brand">flipbookbyalonica</h1>
-    <div class="search-box">
-      <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul atau genre...">
+    <div class="brand"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
+    <div class="nav-actions">
+      <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul...">
+      </div>
+      <button class="btn-add-book" onclick="openModal()"><i class="fa-solid fa-plus"></i> Tambah</button>
     </div>
   </nav>
 
-  <!-- Filter Genre -->
-  <div class="filter-container">
-    <button class="filter-btn active" onclick="filterGenre('all', this)">Semua</button>
-    <button class="filter-btn" onclick="filterGenre('kota', this)">Kota</button>
-    <button class="filter-btn" onclick="filterGenre('majalah', this)">Majalah</button>
-    <button class="filter-btn" onclick="filterGenre('edukasi', this)">Edukasi</button>
-  </div>
+  <!-- Grid Catalog Buku -->
+  <div class="book-grid" id="bookGrid"></div>
 
-  <!-- Grid Tempat Buku Muncul Otomatis -->
-  <div class="book-grid" id="bookGrid">
-    <!-- Diisi otomatis dari buku.js -->
+  <!-- Modal Pop-up Form -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-card">
+      <h2><i class="fa-solid fa-plus-circle"></i> Tambah Buku Baru</h2>
+      <form id="addBookForm" onsubmit="saveNewBook(event)">
+        <div class="form-group">
+          <label>Judul Buku</label>
+          <input type="text" id="inputJudul" required placeholder="Contoh: Majalah Vol 1">
+        </div>
+        <div class="form-group">
+          <label>Lokasi File PDF</label>
+          <input type="text" id="inputFile" required placeholder="books/nama-file.pdf">
+        </div>
+        <div class="form-group">
+          <label>Lokasi Gambar Cover (di folder img/)</label>
+          <input type="text" id="inputCover" placeholder="img/nama-cover.jpg">
+        </div>
+        <div class="form-group">
+          <label>Genre (Pisahkan dengan koma)</label>
+          <input type="text" id="inputGenre" required placeholder="kota, edukasi, umum">
+        </div>
+        <div class="form-group">
+          <label>Sinopsis Singkat</label>
+          <textarea id="inputDesc" rows="4" required placeholder="Tuliskan ringkasan singkat buku di sini..."></textarea>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn-submit">Simpan & Tampilkan</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-  <!-- Library PDF.js untuk Otomatis render cover depan PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
-  
-  <!-- Database buku kita -->
-  <script src="buku.js"></script>
 
+  <script>
+    // Data Buku Default
+    const defaultBuku = [
+      {
+        judul: "Boune City",
+        file: "books/boune-city.pdf",
+        cover: "img/boune-city-cover.jpg",
+        genre: ["kota", "edukasi"],
+        deskripsi: "Dokumen dan panduan interaktif seputar kota Boune City. Temukan informasi lengkap mengenai sejarah, fasilitas, dan rencana masa depan kota.",
+        tanggal: "1 Sep 2026"
+      }
+    ];
+
+    let koleksiBuku = JSON.parse(localStorage.getItem('my_alonica_library')) || defaultBuku;
+
+    function renderBuku(bukuList) {
+      const grid = document.getElementById('bookGrid');
+      grid.innerHTML = "";
+
+      if (bukuList.length === 0) {
+        grid.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">Buku tidak ditemukan...</p>`;
+        return;
+      }
+
+      bukuList.forEach((buku) => {
+        const badges = buku.genre.map(g => `<span class="badge">${g}</span>`).join('');
+        const imgCover = buku.cover || 'img/boune-city-cover.jpg';
+        const synopsis = buku.deskripsi || 'Tidak ada sinopsis.';
+        const dateStr = buku.tanggal || '1 Sep 2026';
+
+        const card = `
+          <div class="book-card">
+            <div class="cover-wrapper">
+              <img src="${imgCover}" alt="${buku.judul}" onerror="this.src='https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600&auto=format&fit=crop'">
+            </div>
+            
+            <div class="book-details">
+              <div>
+                <h3 class="book-title">${buku.judul}</h3>
+                
+                <p class="book-synopsis">${synopsis}</p>
+                
+                <div class="book-meta">
+                  <div class="genre-badges">${badges}</div>
+                  <div class="upload-date">
+                    <i class="fa-regular fa-calendar-days"></i> Uploaded: ${dateStr}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="book-action">
+                <div class="_df_button btn-read-flip" source="${buku.file}">Baca Flipbook</div>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.innerHTML += card;
+      });
+    }
+
+    function openModal() { document.getElementById('addModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('addModal').style.display = 'none'; }
+
+    function saveNewBook(e) {
+      e.preventDefault();
+      const judul = document.getElementById('inputJudul').value;
+      const file = document.getElementById('inputFile').value;
+      const cover = document.getElementById('inputCover').value;
+      const genreRaw = document.getElementById('inputGenre').value;
+      const deskripsi = document.getElementById('inputDesc').value;
+
+      const now = new Date();
+      const options = { day: 'numeric', month: 'short', year: 'numeric' };
+      const tanggal = now.toLocaleDateString('id-ID', options);
+
+      const genres = genreRaw ? genreRaw.split(',').map(g => g.trim().toLowerCase()) : ['umum'];
+
+      const newBook = { judul, file, cover, genre: genres, deskripsi, tanggal };
+      koleksiBuku.push(newBook);
+      localStorage.setItem('my_alonica_library', JSON.stringify(koleksiBuku));
+
+      renderBuku(koleksiBuku);
+      closeModal();
+      document.getElementById('addBookForm').reset();
+    }
+
+    function searchBuku() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = koleksiBuku.filter(b => b.judul.toLowerCase().includes(q));
+      renderBuku(filtered);
+    }
+
+    renderBuku(koleksiBuku);
+  </script>
 </body>
 </html>
