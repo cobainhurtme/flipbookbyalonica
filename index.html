@@ -189,11 +189,12 @@
       margin: 0;
     }
 
-    .dropdown-user-info .role {
+    .dropdown-user-info .bio {
       font-size: 0.75rem;
-      color: var(--accent-cyan);
-      margin: 2px 0 0 0;
-      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 3px 0 0 0;
+      font-weight: 500;
+      font-style: italic;
     }
 
     .dropdown-menu-list {
@@ -546,7 +547,7 @@
             <img src="img/profile.png" alt="User Avatar" class="dropdown-avatar" id="dropdownUserAvatar">
             <div class="dropdown-user-info">
               <p class="name" id="dropdownUserName">freudian</p>
-              <p class="role"><i class="fa-solid fa-circle-check"></i> VIP Member</p>
+              <p class="bio">honey, there's the door</p>
             </div>
           </div>
 
@@ -574,11 +575,8 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
 
-  <!-- Script Aplikasi Utama (Logic & UI Combined) -->
+  <!-- Script Aplikasi Utama -->
   <script>
-    // ===================================================
-    // DATABASE BUKU UTAMA (PERMANEN DI GITHUB)
-    // ===================================================
     const daftarBuku = [
       {
         judul: "Boune City",
@@ -602,7 +600,6 @@
 
     let currentFilter = 'all';
 
-    // Handler Favorit (LocalStorage Browser)
     function getFavoritList() {
       const saved = localStorage.getItem('user_favorites');
       return saved ? JSON.parse(saved) : [];
@@ -633,7 +630,6 @@
       }
     };
 
-    // Kontrol Tampilan & Filter Catalog
     function updateFilterButtons() {
       const container = document.getElementById('filterContainer');
       if (!container) return;
@@ -753,7 +749,6 @@
       renderBuku(filtered);
     };
 
-    // User Profile & System Initializer
     document.addEventListener('DOMContentLoaded', () => {
       const defaultUsername = "freudian";
       const defaultAvatar = "img/profile.png"; 
@@ -778,7 +773,6 @@
       updateFavBadge();
     });
 
-    // Toggle Dropdown Profile Menu
     const profileBtn = document.getElementById('userProfileBtn');
     const dropdown = document.getElementById('profileDropdown');
 
