@@ -205,19 +205,55 @@
       color: #ffffff !important;
     }
 
-    /* Dark Mode Override DFlip Lightbox */
+   /* Modern Glassmorphism Toolbar DFlip */
     .df-lightbox-wrapper,
     .df-lightbox-container,
     .df-container {
-      background: rgba(9, 13, 22, 0.96) !important;
-      backdrop-filter: blur(16px) !important;
+      background: rgba(9, 13, 22, 0.94) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
     }
 
-    .df-ui-controls {
-      background: rgba(18, 26, 43, 0.85) !important;
-      border: 1px solid var(--card-border) !important;
-      border-radius: 16px !important;
-      color: #f8fafc !important;
+    /* Container Bar Navigasi Bawah (Floating Capsule) */
+    .df-ui-controls, 
+    .df-ui-wrapper {
+      background: rgba(18, 26, 43, 0.75) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 50px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15) !important;
+      padding: 6px 20px !important;
+      margin: 20px auto !important;
+      max-width: fit-content !important;
+    }
+
+    /* Styling Setiap Tombol (Icon) */
+    .df-ui-btn {
+      color: var(--text-primary) !important;
+      background: transparent !important;
+      border-radius: 50% !important;
+      transition: all 0.25s ease !important;
+      opacity: 0.8;
+      margin: 0 2px !important;
+    }
+
+    /* Efek Pas Tombol Di-hover Cursor */
+    .df-ui-btn:hover {
+      color: var(--accent-cyan) !important;
+      background: rgba(56, 189, 248, 0.15) !important;
+      opacity: 1 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px var(--accent-glow) !important;
+    }
+
+    /* Styling Teks Angka Halaman */
+    .df-ui-page, 
+    .df-ui-page-input {
+      color: var(--accent-cyan) !important;
+      font-weight: 700 !important;
+      border: none !important;
+      background: transparent !important;
     }
 
     .df-ui-btn { color: var(--accent-cyan) !important; }
