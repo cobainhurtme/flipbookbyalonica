@@ -15,19 +15,19 @@
 
   <style>
     :root {
-      --bg-overlay: rgba(15, 23, 42, 0.9);
-      --card-bg: rgba(30, 41, 59, 0.75);
+      --bg-overlay: rgba(15, 23, 42, 0.88);
+      --card-bg: rgba(30, 41, 59, 0.8);
       --accent: #38bdf8;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.12);
     }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      /* Background Gambar Lokal dari folder img/bg-web.jpg */
+      /* Memanggil Background Lokal Format PNG */
       background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), 
-                  url('img/bg-web.jpg') center/cover fixed no-repeat #0f172a;
+                  url('img/bg-web.png') center/cover fixed no-repeat #0f172a;
       color: var(--text);
       margin: 0;
       padding-top: 90px;
@@ -54,7 +54,7 @@
       border: 1px solid var(--border);
       color: var(--text);
       padding: 10px 18px; border-radius: 30px;
-      width: 240px; outline: none; font-size: 0.9rem;
+      width: 220px; outline: none; font-size: 0.9rem;
     }
 
     .btn-add-book {
@@ -63,24 +63,37 @@
       cursor: pointer; display: flex; align-items: center; gap: 8px;
     }
 
-    /* Grid Catalog Buku */
-    .book-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 25px;
-      padding: 30px 5%;
-      max-width: 1000px;
-      margin: 0 auto;
+    /* Filter Bar Dinamis */
+    .filter-container {
+      padding: 10px 5%;
+      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+      max-width: 1000px; margin: 0 auto;
     }
 
-    /* Card Buku Horizontal */
+    .filter-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 16px; border-radius: 20px;
+      cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+      text-transform: capitalize;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent); color: #0f172a; font-weight: 700; border-color: var(--accent);
+    }
+
+    /* Grid Catalog Buku Horizontal */
+    .book-grid {
+      display: grid; grid-template-columns: 1fr; gap: 25px;
+      padding: 20px 5% 50px; max-width: 1000px; margin: 0 auto;
+    }
+
     .book-card {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      display: flex;
-      overflow: hidden;
+      border-radius: 16px; border: 1px solid var(--border);
+      display: flex; overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -89,96 +102,58 @@
       box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
     }
 
-    /* Kiri: Cover */
     .cover-wrapper {
-      width: 180px;
-      height: 260px;
-      flex-shrink: 0;
-      overflow: hidden;
+      width: 180px; height: 260px; flex-shrink: 0; overflow: hidden;
     }
 
     .cover-wrapper img {
-      width: 100%; height: 100%;
-      object-fit: cover;
+      width: 100%; height: 100%; object-fit: cover;
     }
 
-    /* Kanan: Details Berurutan */
     .book-details {
-      padding: 25px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      padding: 25px; flex-grow: 1;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
 
-    .book-title {
-      font-size: 1.4rem; font-weight: 700;
-      margin: 0 0 15px 0; color: white;
-    }
+    .book-title { font-size: 1.4rem; font-weight: 700; margin: 0 0 12px 0; color: white; }
 
-    /* 1. Sinopsis Singkat */
     .book-synopsis {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin: 0 0 20px 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0 0 15px 0;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
 
-    /* Baris Meta (Genre & Tanggal) */
     .book-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      border-top: 1px solid var(--border);
-      padding-top: 15px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 15px; border-top: 1px solid var(--border); padding-top: 12px;
     }
 
-    /* 2. Genre */
     .genre-badges { display: flex; gap: 6px; flex-wrap: wrap; }
 
     .badge {
       font-size: 0.7rem; font-weight: 700;
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--accent);
-      padding: 4px 10px; border-radius: 20px;
-      text-transform: uppercase;
+      background: rgba(56, 189, 248, 0.15); color: var(--accent);
+      padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
     }
 
-    /* 3. Tanggal Upload */
-    .upload-date {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      display: flex; align-items: center; gap: 6px;
-    }
+    .upload-date { color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
 
-    /* Tombol Baca */
     .book-action ._df_button {
-      display: inline-block;
-      width: auto;
-      background: var(--accent) !important;
-      color: #0f172a !important;
-      font-weight: 700 !important;
-      padding: 10px 25px !important;
-      border-radius: 8px !important;
+      display: inline-block; background: var(--accent) !important;
+      color: #0f172a !important; font-weight: 700 !important;
+      padding: 10px 25px !important; border-radius: 8px !important;
       cursor: pointer; border: none !important;
     }
 
     /* Modal Form */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
       display: none; justify-content: center; align-items: center; z-index: 2000;
     }
 
     .modal-card {
       background: #1e293b; border: 1px solid var(--border);
-      padding: 30px; border-radius: 16px;
-      width: 90%; max-width: 480px;
+      padding: 30px; border-radius: 16px; width: 90%; max-width: 480px;
     }
 
     .form-group { margin-bottom: 15px; }
@@ -196,7 +171,7 @@
       .book-card { flex-direction: column; }
       .cover-wrapper { width: 100%; height: 220px; }
       .book-meta { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .search-box input { width: 150px; }
+      .search-box input { width: 140px; }
     }
   </style>
 </head>
@@ -207,16 +182,19 @@
     <div class="brand"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
     <div class="nav-actions">
       <div class="search-box">
-        <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul...">
+        <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul/genre...">
       </div>
-      <button class="btn-add-book" onclick="openModal()"><i class="fa-solid fa-plus"></i> Tambah</button>
+      <button class="btn-add-book" onclick="openModal()"><i class="fa-solid fa-plus"></i> Tambah Buku</button>
     </div>
   </nav>
+
+  <!-- Filter Genre Dinamis -->
+  <div class="filter-container" id="filterContainer"></div>
 
   <!-- Grid Catalog Buku -->
   <div class="book-grid" id="bookGrid"></div>
 
-  <!-- Modal Pop-up Form -->
+  <!-- Modal Form Pop-up -->
   <div class="modal-overlay" id="addModal">
     <div class="modal-card">
       <h2><i class="fa-solid fa-plus-circle"></i> Tambah Buku Baru</h2>
@@ -226,20 +204,20 @@
           <input type="text" id="inputJudul" required placeholder="Contoh: Majalah Vol 1">
         </div>
         <div class="form-group">
-          <label>Lokasi File PDF</label>
+          <label>Lokasi File PDF (di folder books/)</label>
           <input type="text" id="inputFile" required placeholder="books/nama-file.pdf">
         </div>
         <div class="form-group">
           <label>Lokasi Gambar Cover (di folder img/)</label>
-          <input type="text" id="inputCover" placeholder="img/nama-cover.jpg">
+          <input type="text" id="inputCover" placeholder="img/nama-cover.png">
         </div>
         <div class="form-group">
-          <label>Genre (Pisahkan dengan koma)</label>
-          <input type="text" id="inputGenre" required placeholder="kota, edukasi, umum">
+          <label>Genre / Kategori (Pisahkan koma jika lebih dari 1)</label>
+          <input type="text" id="inputGenre" required placeholder="Contoh: kota, edukasi, novel, komik">
         </div>
         <div class="form-group">
           <label>Sinopsis Singkat</label>
-          <textarea id="inputDesc" rows="4" required placeholder="Tuliskan ringkasan singkat buku di sini..."></textarea>
+          <textarea id="inputDesc" rows="4" required placeholder="Tuliskan ringkasan cerita atau isi buku di sini..."></textarea>
         </div>
         <div class="modal-buttons">
           <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
@@ -254,19 +232,33 @@
   <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
 
   <script>
-    // Data Buku Default
+    // Data Buku Default (Sudah disesuaikan dengan ekstensi PNG)
     const defaultBuku = [
       {
         judul: "Boune City",
         file: "books/boune-city.pdf",
-        cover: "img/boune-city-cover.jpg",
+        cover: "img/boune-city-cover.png",
         genre: ["kota", "edukasi"],
         deskripsi: "Dokumen dan panduan interaktif seputar kota Boune City. Temukan informasi lengkap mengenai sejarah, fasilitas, dan rencana masa depan kota.",
         tanggal: "1 Sep 2026"
       }
     ];
 
-    let koleksiBuku = JSON.parse(localStorage.getItem('my_alonica_library')) || defaultBuku;
+    // Memakai Kunci LocalStorage Baru 'alonica_v4'
+    let koleksiBuku = JSON.parse(localStorage.getItem('alonica_v4')) || defaultBuku;
+    let currentFilter = 'all';
+
+    function updateFilterButtons() {
+      const container = document.getElementById('filterContainer');
+      let allGenres = new Set();
+      koleksiBuku.forEach(b => b.genre.forEach(g => allGenres.add(g.toLowerCase())));
+
+      let html = `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterGenre('all')">Semua</button>`;
+      allGenres.forEach(g => {
+        html += `<button class="filter-btn ${currentFilter === g ? 'active' : ''}" onclick="filterGenre('${g}')">${g}</button>`;
+      });
+      container.innerHTML = html;
+    }
 
     function renderBuku(bukuList) {
       const grid = document.getElementById('bookGrid');
@@ -279,7 +271,7 @@
 
       bukuList.forEach((buku) => {
         const badges = buku.genre.map(g => `<span class="badge">${g}</span>`).join('');
-        const imgCover = buku.cover || 'img/boune-city-cover.jpg';
+        const imgCover = buku.cover || 'img/boune-city-cover.png';
         const synopsis = buku.deskripsi || 'Tidak ada sinopsis.';
         const dateStr = buku.tanggal || '1 Sep 2026';
 
@@ -292,7 +284,6 @@
             <div class="book-details">
               <div>
                 <h3 class="book-title">${buku.judul}</h3>
-                
                 <p class="book-synopsis">${synopsis}</p>
                 
                 <div class="book-meta">
@@ -311,6 +302,8 @@
         `;
         grid.innerHTML += card;
       });
+
+      updateFilterButtons();
     }
 
     function openModal() { document.getElementById('addModal').style.display = 'flex'; }
@@ -320,7 +313,7 @@
       e.preventDefault();
       const judul = document.getElementById('inputJudul').value;
       const file = document.getElementById('inputFile').value;
-      const cover = document.getElementById('inputCover').value;
+      const cover = document.getElementById('inputCover').value || 'img/boune-city-cover.png';
       const genreRaw = document.getElementById('inputGenre').value;
       const deskripsi = document.getElementById('inputDesc').value;
 
@@ -332,16 +325,29 @@
 
       const newBook = { judul, file, cover, genre: genres, deskripsi, tanggal };
       koleksiBuku.push(newBook);
-      localStorage.setItem('my_alonica_library', JSON.stringify(koleksiBuku));
+      localStorage.setItem('alonica_v4', JSON.stringify(koleksiBuku));
 
       renderBuku(koleksiBuku);
       closeModal();
       document.getElementById('addBookForm').reset();
     }
 
+    function filterGenre(genre) {
+      currentFilter = genre;
+      if (genre === 'all') {
+        renderBuku(koleksiBuku);
+      } else {
+        const filtered = koleksiBuku.filter(b => b.genre.map(g => g.toLowerCase()).includes(genre));
+        renderBuku(filtered);
+      }
+    }
+
     function searchBuku() {
       const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = koleksiBuku.filter(b => b.judul.toLowerCase().includes(q));
+      const filtered = koleksiBuku.filter(b => 
+        b.judul.toLowerCase().includes(q) || 
+        b.genre.some(g => g.toLowerCase().includes(q))
+      );
       renderBuku(filtered);
     }
 
