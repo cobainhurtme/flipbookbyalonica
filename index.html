@@ -205,7 +205,7 @@
       color: #ffffff !important;
     }
 
-   /* Modern Glassmorphism Toolbar DFlip */
+    /* FIX FLOATING TOOLBAR DFLIP */
     .df-lightbox-wrapper,
     .df-lightbox-container,
     .df-container {
@@ -214,49 +214,72 @@
       -webkit-backdrop-filter: blur(20px) !important;
     }
 
-    /* Container Bar Navigasi Bawah (Floating Capsule) */
-    .df-ui-controls, 
-    .df-ui-wrapper {
-      background: rgba(18, 26, 43, 0.75) !important;
+    /* Wrapper utama bar bawah */
+    .df-ui-controls {
+      background: rgba(18, 26, 43, 0.85) !important;
       backdrop-filter: blur(16px) !important;
       -webkit-backdrop-filter: blur(16px) !important;
       border: 1px solid rgba(255, 255, 255, 0.15) !important;
-      border-radius: 50px !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15) !important;
-      padding: 6px 20px !important;
-      margin: 20px auto !important;
-      max-width: fit-content !important;
+      border-radius: 40px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15) !important;
+      height: 48px !important;
+      line-height: 48px !important;
+      padding: 0 12px !important;
+      margin: 0 auto 15px auto !important;
+      width: fit-content !important;
+      min-width: unset !important;
+      max-width: 90vw !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: relative !important;
+      overflow: hidden !important;
     }
 
-    /* Styling Setiap Tombol (Icon) */
+    /* Merapikan posisi internal tombol */
+    .df-ui-controls .df-ui-btn,
+    .df-ui-controls .df-ui-prev,
+    .df-ui-controls .df-ui-next,
+    .df-ui-controls .df-ui-zoom,
+    .df-ui-controls .df-ui-page {
+      position: relative !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      float: left !important;
+      height: 36px !important;
+      line-height: 36px !important;
+      margin: 0 2px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    /* Tombol Icon */
     .df-ui-btn {
       color: var(--text-primary) !important;
       background: transparent !important;
       border-radius: 50% !important;
-      transition: all 0.25s ease !important;
+      width: 36px !important;
+      transition: all 0.2s ease !important;
       opacity: 0.8;
-      margin: 0 2px !important;
     }
 
-    /* Efek Pas Tombol Di-hover Cursor */
     .df-ui-btn:hover {
       color: var(--accent-cyan) !important;
       background: rgba(56, 189, 248, 0.15) !important;
       opacity: 1 !important;
-      transform: translateY(-2px);
-      box-shadow: 0 0 12px var(--accent-glow) !important;
     }
 
-    /* Styling Teks Angka Halaman */
-    .df-ui-page, 
-    .df-ui-page-input {
+    /* Teks Angka Halaman */
+    .df-ui-page-input, .df-ui-page {
       color: var(--accent-cyan) !important;
       font-weight: 700 !important;
       border: none !important;
       background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 4px !important;
     }
-
-    .df-ui-btn { color: var(--accent-cyan) !important; }
 
     @media (max-width: 680px) {
       .book-card { flex-direction: column; }
