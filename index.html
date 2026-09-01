@@ -524,12 +524,12 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="brand" onclick="filterGenre('all')"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
+    <div class="brand" onclick="window.filterGenre('all')"><i class="fa-solid fa-book-open"></i> flipbookbyalonica</div>
     
     <div class="nav-right">
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" onkeyup="searchBuku()" placeholder="Cari judul...">
+        <input type="text" id="searchInput" onkeyup="window.searchBuku()" placeholder="Cari judul...">
       </div>
 
       <!-- User Profile Dropdown Component -->
@@ -551,10 +551,10 @@
           </div>
 
           <ul class="dropdown-menu-list">
-            <li class="dropdown-item" onclick="showLibraryOnly()">
+            <li class="dropdown-item" onclick="window.showLibraryOnly()">
               <div><i class="fa-solid fa-bookmark"></i> Library Saya</div>
             </li>
-            <li class="dropdown-item" onclick="showFavoritesOnly()">
+            <li class="dropdown-item" onclick="window.showFavoritesOnly()">
               <div><i class="fa-solid fa-star"></i> Buku Favorit</div>
               <span class="fav-count-badge" id="favBadge">0</span>
             </li>
@@ -570,21 +570,197 @@
   <!-- Grid Catalog Buku -->
   <div class="book-grid" id="bookGrid"></div>
 
-  <!-- Scripts -->
+  <!-- Scripts External Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
-  <script src="buku.js"></script>
 
-  <!-- Script Profil & UI Interaction -->
+  <!-- Script Aplikasi Utama (Logic & UI Combined) -->
   <script>
-    // System Username & Avatar Handler
-    const defaultUsername = "freudian";
-    const defaultAvatar = "img/profile.png"; 
+    // ===================================================
+    // DATABASE BUKU UTAMA (PERMANEN DI GITHUB)
+    // ===================================================
+    const daftarBuku = [
+      {
+        judul: "Boune City",
+        file: "books/boune-city.pdf",
+        cover: "img/boune-city-cover.png",
+        genre: ["city", "action", "mystery", "crime"],
+        deskripsi: "Lima tahun setelah kasus misterius berlalu, Jagad kembali ke Damn Boune dan menemukan petunjuk baru tentang kematian tiga pejabat serta korupsi yang tersembunyi. Bersama Arken, Cendy, dan Akbar, ia berusaha mengungkap dalang di balik semuanya sebelum kebenaran kembali terkubur.",
+        tanggal: "1 Sep 2026",
+        isPopuler: true
+      },
+      {
+        judul: "Satu Langkah Lagi",
+        file: "books/satu-langkah-lagi.pdf",
+        cover: "img/satu-langkah-lagi-cover.png",
+        genre: ["romance", "drama"],
+        deskripsi: "Di tengah senja di tepi pantai, dua sahabat kembali bertemu setelah sekian lama menjalani kesibukan masing-masing. Pertemuan sederhana itu membawa mereka mengingat berbagai kenangan yang pernah dilalui bersama. Sambil menikmati indahnya matahari terbenam, mereka menyadari bahwa terkadang untuk melangkah maju, seseorang hanya perlu satu langkah lagi.",
+        tanggal: "2 Sep 2026",
+        isPopuler: false
+      }
+    ];
 
-    const activeUsername = localStorage.getItem('username') || defaultUsername;
-    const activeAvatar = localStorage.getItem('userAvatar') || defaultAvatar;
+    let currentFilter = 'all';
 
+    // Handler Favorit (LocalStorage Browser)
+    function getFavoritList() {
+      const saved = localStorage.getItem('user_favorites');
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function updateFavBadge() {
+      const favs = getFavoritList();
+      const badge = document.getElementById('favBadge');
+      if (badge) badge.textContent = favs.length;
+    }
+
+    window.toggleFavorit = function(judul) {
+      let favs = getFavoritList();
+      if (favs.includes(judul)) {
+        favs = favs.filter(j => j !== judul);
+      } else {
+        favs.push(judul);
+      }
+      localStorage.setItem('user_favorites', JSON.stringify(favs));
+      updateFavBadge();
+      
+      if (currentFilter === 'favorites') {
+        window.showFavoritesOnly();
+      } else if (currentFilter === 'library') {
+        window.showLibraryOnly();
+      } else {
+        renderBuku(daftarBuku);
+      }
+    };
+
+    // Kontrol Tampilan & Filter Catalog
+    function updateFilterButtons() {
+      const container = document.getElementById('filterContainer');
+      if (!container) return;
+
+      let allGenres = new Set();
+      daftarBuku.forEach(buku => {
+        if (Array.isArray(buku.genre)) {
+          buku.genre.forEach(g => allGenres.add(g.toLowerCase().trim()));
+        }
+      });
+
+      let html = `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="window.filterGenre('all')">Semua</button>`;
+      allGenres.forEach(genre => {
+        html += `<button class="filter-btn ${currentFilter === genre ? 'active' : ''}" onclick="window.filterGenre('${genre}')">${genre}</button>`;
+      });
+      
+      container.innerHTML = html;
+    }
+
+    function renderBuku(bukuList, isCoversOnly = false) {
+      const grid = document.getElementById('bookGrid');
+      if (!grid) return;
+      
+      grid.innerHTML = "";
+      
+      if (isCoversOnly) {
+        grid.classList.add('covers-only');
+      } else {
+        grid.classList.remove('covers-only');
+      }
+
+      if (bukuList.length === 0) {
+        grid.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:40px; grid-column:1/-1;">Belum ada buku di kategori ini...</p>`;
+        return;
+      }
+
+      const favs = getFavoritList();
+
+      bukuList.forEach((buku) => {
+        const badges = (buku.genre || []).map(g => `<span class="badge">${g}</span>`).join('');
+        const imgCover = buku.cover || 'img/boune-city-cover.png';
+        const synopsis = buku.deskripsi || 'Tidak ada sinopsis.';
+        const dateStr = buku.tanggal || '1 Sep 2026';
+        const popularBadge = buku.isPopuler ? `<div class="badge-popular">⭐ Populer</div>` : '';
+        const isFav = favs.includes(buku.judul);
+
+        const card = `
+          <div class="book-card">
+            <div class="cover-wrapper">
+              ${popularBadge}
+              <img src="${imgCover}" alt="${buku.judul}" onerror="this.src='https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600&auto=format&fit=crop'">
+            </div>
+            
+            <div class="book-details">
+              <div>
+                <h3 class="book-title">${buku.judul}</h3>
+                <p class="book-synopsis">${synopsis}</p>
+                
+                <div class="book-meta">
+                  <div class="genre-badges">${badges}</div>
+                  <div class="upload-date">
+                    <i class="fa-regular fa-calendar-days"></i> Uploaded: ${dateStr}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="book-action">
+                <div class="_df_button btn-read-flip" source="${buku.file}">Baca Flipbook</div>
+                <button class="btn-fav-toggle ${isFav ? 'is-fav' : ''}" onclick="window.toggleFavorit('${buku.judul}')" title="Favoritkan Buku">
+                  <i class="fa-${isFav ? 'solid' : 'regular'} fa-star"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.innerHTML += card;
+      });
+
+      updateFilterButtons();
+      updateFavBadge();
+    }
+
+    window.filterGenre = function(genre) {
+      currentFilter = genre;
+      if (genre === 'all') {
+        renderBuku(daftarBuku);
+      } else {
+        const filtered = daftarBuku.filter(b => 
+          Array.isArray(b.genre) && b.genre.map(g => g.toLowerCase()).includes(genre)
+        );
+        renderBuku(filtered);
+      }
+    };
+
+    window.showLibraryOnly = function() {
+      currentFilter = 'library';
+      renderBuku(daftarBuku, true);
+      const dropdown = document.getElementById('profileDropdown');
+      if (dropdown) dropdown.classList.remove('show');
+    };
+
+    window.showFavoritesOnly = function() {
+      currentFilter = 'favorites';
+      const favs = getFavoritList();
+      const filtered = daftarBuku.filter(b => favs.includes(b.judul));
+      renderBuku(filtered, true);
+      const dropdown = document.getElementById('profileDropdown');
+      if (dropdown) dropdown.classList.remove('show');
+    };
+
+    window.searchBuku = function() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = daftarBuku.filter(b => 
+        b.judul.toLowerCase().includes(q) || 
+        (Array.isArray(b.genre) && b.genre.some(g => g.toLowerCase().includes(q)))
+      );
+      renderBuku(filtered);
+    };
+
+    // User Profile & System Initializer
     document.addEventListener('DOMContentLoaded', () => {
+      const defaultUsername = "freudian";
+      const defaultAvatar = "img/profile.png"; 
+
+      const activeUsername = localStorage.getItem('username') || defaultUsername;
+      const activeAvatar = localStorage.getItem('userAvatar') || defaultAvatar;
+
       document.getElementById('navUserName').textContent = activeUsername;
       document.getElementById('dropdownUserName').textContent = activeUsername;
       
@@ -597,6 +773,9 @@
 
       navAvatarImg.onerror = () => { navAvatarImg.src = fallbackAvatar; };
       dropAvatarImg.onerror = () => { dropAvatarImg.src = fallbackAvatar; };
+
+      renderBuku(daftarBuku);
+      updateFavBadge();
     });
 
     // Toggle Dropdown Profile Menu
