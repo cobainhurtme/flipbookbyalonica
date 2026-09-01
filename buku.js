@@ -15,7 +15,7 @@ const daftarBuku = [
     judul: "Satu Langkah Lagi",
     file: "books/satu-langkah-lagi.pdf",
     cover: "img/satu-langkah-lagi-cover.png",
-    genre: ["romance", "drama", ], // <-- Langsung ketik "romance" di sini
+    genre: ["romance", "drama"],
     deskripsi: "Di tengah senja di tepi pantai, dua sahabat kembali bertemu setelah sekian lama menjalani kesibukan masing-masing. Pertemuan sederhana itu membawa mereka mengingat berbagai kenangan yang pernah dilalui bersama. Sambil menikmati indahnya matahari terbenam, mereka menyadari bahwa terkadang untuk melangkah maju, seseorang hanya perlu satu langkah lagi.",
     tanggal: "2 Sep 2026",
     isPopuler: false
@@ -23,6 +23,37 @@ const daftarBuku = [
 ];
 
 let currentFilter = 'all';
+
+// Load Buku Favorit dari LocalStorage Browser
+function getFavoritList() {
+  const saved = localStorage.getItem('user_favorites');
+  return saved ? JSON.parse(saved) : [];
+}
+
+function updateFavBadge() {
+  const favs = getFavoritList();
+  const badge = document.getElementById('favBadge');
+  if (badge) badge.textContent = favs.length;
+}
+
+function toggleFavorit(judul) {
+  let favs = getFavoritList();
+  if (favs.includes(judul)) {
+    favs = favs.filter(j => j !== judul);
+  } else {
+    favs.push(judul);
+  }
+  localStorage.setItem('user_favorites', JSON.stringify(favs));
+  updateFavBadge();
+  
+  if (currentFilter === 'favorites') {
+    showFavoritesOnly();
+  } else if (currentFilter === 'library') {
+    showLibraryOnly();
+  } else {
+    renderBuku(daftarBuku);
+  }
+}
 
 // ===================================================
 // KONTROL TAMPILAN & FILTER
@@ -46,16 +77,24 @@ function updateFilterButtons() {
   container.innerHTML = html;
 }
 
-function renderBuku(bukuList) {
+function renderBuku(bukuList, isCoversOnly = false) {
   const grid = document.getElementById('bookGrid');
   if (!grid) return;
   
   grid.innerHTML = "";
+  
+  if (isCoversOnly) {
+    grid.classList.add('covers-only');
+  } else {
+    grid.classList.remove('covers-only');
+  }
 
   if (bukuList.length === 0) {
-    grid.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; grid-column:1/-1;">Buku tidak ditemukan...</p>`;
+    grid.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:40px; grid-column:1/-1;">Buku tidak ditemukan...</p>`;
     return;
   }
+
+  const favs = getFavoritList();
 
   bukuList.forEach((buku) => {
     const badges = (buku.genre || []).map(g => `<span class="badge">${g}</span>`).join('');
@@ -63,6 +102,7 @@ function renderBuku(bukuList) {
     const synopsis = buku.deskripsi || 'Tidak ada sinopsis.';
     const dateStr = buku.tanggal || '1 Sep 2026';
     const popularBadge = buku.isPopuler ? `<div class="badge-popular">⭐ Populer</div>` : '';
+    const isFav = favs.includes(buku.judul);
 
     const card = `
       <div class="book-card">
@@ -86,6 +126,9 @@ function renderBuku(bukuList) {
           
           <div class="book-action">
             <div class="_df_button btn-read-flip" source="${buku.file}">Baca Flipbook</div>
+            <button class="btn-fav-toggle ${isFav ? 'is-fav' : ''}" onclick="toggleFavorit('${buku.judul}')" title="Tambah ke Favorit">
+              <i class="fa-${isFav ? 'solid' : 'regular'} fa-star"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -94,6 +137,7 @@ function renderBuku(bukuList) {
   });
 
   updateFilterButtons();
+  updateFavBadge();
 }
 
 function filterGenre(genre) {
@@ -108,6 +152,24 @@ function filterGenre(genre) {
   }
 }
 
+// Menampilkan Hanya Grid Cover (Library Saya)
+function showLibraryOnly() {
+  currentFilter = 'library';
+  renderBuku(daftarBuku, true);
+  const dropdown = document.getElementById('profileDropdown');
+  if (dropdown) dropdown.classList.remove('show');
+}
+
+// Menampilkan Hanya Buku Favorit (Grid Cover)
+function showFavoritesOnly() {
+  currentFilter = 'favorites';
+  const favs = getFavoritList();
+  const filtered = daftarBuku.filter(b => favs.includes(b.judul));
+  renderBuku(filtered, true);
+  const dropdown = document.getElementById('profileDropdown');
+  if (dropdown) dropdown.classList.remove('show');
+}
+
 function searchBuku() {
   const q = document.getElementById('searchInput').value.toLowerCase();
   const filtered = daftarBuku.filter(b => 
@@ -119,4 +181,5 @@ function searchBuku() {
 
 document.addEventListener('DOMContentLoaded', () => {
   renderBuku(daftarBuku);
+  updateFavBadge();
 });
